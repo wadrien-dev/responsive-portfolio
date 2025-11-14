@@ -10,10 +10,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "animate.css": "^4.1.1",
     "bootstrap": "^5.3.8",
     "react": "^19.2.0",
     "react-bootstrap": "^2.10.10",
-    "react-dom": "^19.2.0"
+    "react-bootstrap-icons": "^1.11.6",
+    "react-dom": "^19.2.0",
+    "react-on-screen": "^2.1.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
