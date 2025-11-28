@@ -14,13 +14,13 @@ function App() {
       <h1>Hello Adrien!</h1>
       <p>If you see this, it is working.</p>
     </div>*/
-
+    
     <div className="App">
       {/* <NavBar /> */}
-      {/* <Banner /> */}
-      {/* <Skills /> */}
-      {/* <Projects /> */}
-      <Contact />
+      <Banner />
+      <Skills /> 
+      {/*<Projects />*/}
+      <Contact />  
       <Footer />
     </div>
   );
