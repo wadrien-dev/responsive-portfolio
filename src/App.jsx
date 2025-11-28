@@ -10,14 +10,18 @@ import { Footer } from "./components/Footer";
 
 function App() {
   return (
-    <div className="App">
+    <div style={{ textAlign: 'center', paddingTop: '4rem'}}>
+      <h1>Hello Adrien!</h1>
+      <p>If you see this, it is working.</p>
+    </div>
+    /*<div className="App">
       <NavBar />
       <Banner />
       <Skills />
       <Projects />
       <Contact />
       <Footer />
-    </div>
+    </div>*/
   );
 }
 
