@@ -76,7 +76,7 @@ Feel free to reach out or explore more:
 - 🌐 [Portfolio Website](https://wadrien-dev.github.io/responsive-portfolio/)
 - 💼 [LinkedIn](https://linkedin.com/in/wadrien)
 - 💻 [GitHub](https://github.com/wadrien-dev)
-- ✉️ Email: `adrien.woodna@gmail.com`
+- ✉️ Email: `wadrien-dev@gmail.com`
 
 ---
 
