@@ -9,5 +9,5 @@ export default defineConfig({
       '/contact': 'http://localhost:5000',
     },
   },
-  base: "/wadrien-portfolio",
+  base: "/responsive-portfolio",
 });
