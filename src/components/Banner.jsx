@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { Container,Row, Col } from "react-bootstrap";
-import { HashLink } from "react-router-hash-link"; // add connect hash link
+import { BrowserRouter as Router } from "react-router-dom"; 
+import { HashLink } from "react-router-hash-link";
 import headerImg from "../assets/img/header-img.png";
 import { ArrowRightCircle } from 'react-bootstrap-icons';
 import 'animate.css';
 import TrackVisibility from 'react-on-screen';
+
 
 const initialDelta = 300 - (Math.random() *100);
 
@@ -64,7 +66,13 @@ export const Banner = () => {
                                 <p>I'm a Software Engineer and Computer Science student at Wilmington University.
                                     I specialized in mobile app development, React-based web interfaces, and full-stack experimentation.
                                 </p>
-                                <button onClick={() => console.log('connect')}>Let's Connect <ArrowRightCircle size={25} /></button>
+                                <Router>
+                                    <HashLink to="#connect">
+                                        <button onClick={() => console.log('connect')}>
+                                            Let's Connect <ArrowRightCircle size={25} />
+                                        </button>
+                                    </HashLink>
+                                </Router>
                             </div>}
                         </TrackVisibility>
                     </Col>
