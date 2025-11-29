@@ -1,4 +1,6 @@
 import { Container, Row, Col, Tab, Nav } from "react-bootstrap";
+import 'react-multi-carousel/lib/styles.css';
+import Carousel from "react-multi-carousel";
 import { ProjectCard } from "./ProjectCard";
 import projImg1 from "../assets/img/project-img1.png";
 import projImg2 from "../assets/img/project-img2.png";
@@ -57,6 +59,27 @@ export const Projects = () => {
             imgUrl: projImg2
         }
     ];
+
+    const responsive = {
+        desktop: {
+            breakpoint: { max: 3000, min: 1024 },
+            items: 3,
+            slidesToSlide: 1,
+        },
+
+        tablet: {
+            breakpoint: { max: 1024, min: 768 },
+            items: 2,
+            slidesToSlide: 1,
+        },
+
+        mobile: {
+            breakpoint: { max: 768, min: 0 },
+            items: 1, 
+            slidesToSlide: 1
+        },
+    };
+
     return (
         <section className="project" id="projects">
             <Container>
@@ -67,18 +90,17 @@ export const Projects = () => {
                             <div className={isVisible ? "animate_animated animate_fadeIn": ""}>
                                 <h2>Projects</h2>
                                 <p>Here are a few Android apps I've built as part of my developmer journey.</p>
-                                <Row>
-                                    {
-                                        projects.map((project, index) => {
-                                            return (
+                                
+                                    <Carousel responsive={responsive}>
+                                        {
+                                            projects.map((project, index) => (
                                                 <ProjectCard
                                                     key={index}
                                                     {...project}
-                                                    />
-                                            )
-                                        })
-                                    }
-                                </Row>
+                                                />
+                                            ))
+                                        }
+                                    </Carousel>
                             </div>
                             )}
                         </TrackVisibility>
