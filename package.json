@@ -1,4 +1,5 @@
 {
+  "homepage": "https://github.com/wadrien-dev/responsive-portfolio",
   "name": "wadrien-portfolio",
   "private": true,
   "version": "0.0.0",
@@ -7,7 +8,9 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "animate.css": "^4.1.1",
@@ -34,7 +37,10 @@
     "eslint": "^9.39.1",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
+    "gh-pages": "^6.3.0",
     "globals": "^16.5.0",
-    "vite": "^7.2.2"
+    "vite": "^7.2.2",
+    "vite-plugin-pages": "^0.33.1",
+    "vite-plugin-static-copy": "^3.1.4"
   }
 }
