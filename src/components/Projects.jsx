@@ -10,21 +10,51 @@ export const Projects = () => {
 
     const projects = [
         {
-            title: "Business Startup",
-            description: "Design & Development",
-            imgUrl: projImg1,
+            title: "Compass App",
+            description: "Android compass using device magnetometer sensor.",
+            tech: "Kotlin, Android SDK",
+            link: "",
+            imgUrl: projImg1
         },
 
         {
-            title: "Business Startup",
-            description: "Design & Development",
-            imgUrl: projImg2,
+            title: "Magic 8 Ball App",
+            description: "Kotlin app giving randomized answers like a real 8 ball.",
+            tech: "Kotlin, Android Studio",
+            link: "",
+            imgUrl: projImg2
         },
 
         {
-            title: "Business Startup",
+            title: "Medical Provider Portal",
             description: "Design & Development",
-            imgUrl: projImg3,
+            tech: "XML, Firebase, Android",
+            link: "",
+            imgUrl: projImg1, // projImg3 - need to replace w/ appropriate img
+        },
+
+        {
+            title: "Soundboard App",
+            description: "Simple soundboard app with custom UI and effects.",
+            tech: "Kotlin, MediaPlayer API",
+            link: "",
+            imgUrl: projImg2, // projImg4 - nonexistent 
+        },
+
+        {
+            title: "Compass App",
+            description: "Android compass using device magnetometer sensor.",
+            tech: "Kotlin, Android SDK",
+            link: "",
+            imgUrl: projImg1
+        },
+
+        {
+            title: "Magic 8 Ball App",
+            description: "Kotlin app giving randomized answers like a real 8 ball.",
+            tech: "Kotlin, Android Studio",
+            link: "",
+            imgUrl: projImg2
         }
     ];
     return (
@@ -36,42 +66,19 @@ export const Projects = () => {
                             {({ isVisible }) => (
                             <div className={isVisible ? "animate_animated animate_fadeIn": ""}>
                                 <h2>Projects</h2>
-                                <p>Random dummy text for now...</p>
-                                <Tab.Container id="projects-tabs" defaultActiveKey="first">
-                                    <Nav variant="pills" className="nav-pills mb-5 justify-content-center align-items-center" id="pills-tab">
-                                        <Nav.Item>
-                                            <Nav.Link eventKey="first">Tab 1</Nav.Link>
-                                        </Nav.Item>
-                                        <Nav.Item>
-                                            <Nav.Link eventKey="second">Tab 2</Nav.Link>
-                                        </Nav.Item>
-                                        <Nav.Item>
-                                            <Nav.Link eventKey="third">Tab 3</Nav.Link>
-                                        </Nav.Item>
-                                    </Nav>
-                                    <Tab.Content id="slideInUp" className={isVisible ? "animate_animated animate_slideInUp" : ""}>
-                                        <Tab.Pane eventKey="first">
-                                            <Row>
-                                                {
-                                                    projects.map((project, index) => {
-                                                        return (
-                                                            <ProjectCard
-                                                                key={index}
-                                                                {...project}
-                                                                />
-                                                        )
-                                                    })
-                                                }
-                                            </Row>
-                                        </Tab.Pane>
-                                        <Tab.Pane eventKey="second">
-                                            <p>Dummy text again.</p>
-                                        </Tab.Pane>
-                                        <Tab.Pane eventKey="third">
-                                            <p>dummy text dummy temporary.</p>
-                                        </Tab.Pane>
-                                    </Tab.Content>
-                                </Tab.Container>
+                                <p>Here are a few Android apps I've built as part of my developmer journey.</p>
+                                <Row>
+                                    {
+                                        projects.map((project, index) => {
+                                            return (
+                                                <ProjectCard
+                                                    key={index}
+                                                    {...project}
+                                                    />
+                                            )
+                                        })
+                                    }
+                                </Row>
                             </div>
                             )}
                         </TrackVisibility>

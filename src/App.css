@@ -248,7 +248,7 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
   background-image: url('./assets/img/banner-bg.png');
   background-position: top center;
   background-size: cover;
-  background-repeat: no-repeat;
+  background-repeat: repeat;
 }
 
 .banner .tagline {
@@ -318,6 +318,11 @@ nav.navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
 
 .txt-rotate > .wrap {
   border-right: 0.08em solid #666;
+  animation: blink 0.7s steps(1) infinite;
+}
+
+@keyframes blink {
+  50% { border-color: transparent }
 }
 
 /* Skills CSS */
