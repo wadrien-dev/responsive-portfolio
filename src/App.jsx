@@ -1,7 +1,7 @@
 import logo from './assets/img/logo.svg';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { NavBar } from "./components/NavBar";
+import { NavigationBar } from "./components/NavigationBar";
 import { Banner } from "./components/Banner";
 import { Skills } from "./components/Skills";
 import { Projects } from "./components/Projects";
@@ -16,7 +16,7 @@ function App() {
     </div>*/
     
     <div className="App">
-      {/* <NavBar /> */}
+      <NavigationBar />
       <Banner />
       <Skills /> 
       {/*<Projects />*/}
