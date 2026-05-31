@@ -1,91 +1,124 @@
-import { useState, useEffect } from "react";
-import { Container,Row, Col } from "react-bootstrap";
-import { BrowserRouter as Router } from "react-router-dom"; 
-import { HashLink } from "react-router-hash-link";
+import { useEffect, useState } from "react";
+import { Container, Row, Col } from "react-bootstrap";
+import { ArrowRightCircle } from "react-bootstrap-icons";
+import TrackVisibility from "react-on-screen";
 import headerImg from "../assets/img/header-img.png";
-import { ArrowRightCircle } from 'react-bootstrap-icons';
-import 'animate.css';
-import TrackVisibility from 'react-on-screen';
+import "animate.css";
 
-
-const initialDelta = 300 - (Math.random() *100);
+const roles = [
+  "Software Developer",
+  "Application Support",
+  "QA Testing",
+  "Android Developer",
+];
 
 export const Banner = () => {
-    const [loopNum, setLoopNum] = useState(0);
-    const [isDeleting, setIsDeleting] = useState(false);
-    const [text, setText] = useState('');
-    const [delta, setDelta] = useState(initialDelta);
-    const [index, setIndex] = useState(1);
-    const toRotate = [" | Software Developer", " | Android Developer", "| CS Student (May 2026)"];
-    const period = 2000;
+  const [roleIndex, setRoleIndex] = useState(0);
+  const [text, setText] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
 
+  useEffect(() => {
+    const activeRole = roles[roleIndex];
+    const isComplete = text === activeRole;
+    const isEmpty = text === "";
 
-    const tick = () => {
-        let i = loopNum % toRotate.length;
-        let fullText = toRotate[i];
-        let updatedText = isDeleting 
-            ? fullText.substring(0, text.length - 1) 
-            : fullText.substring(0, text.length + 1);
+    const delay =
+      isComplete && !isDeleting
+        ? 1400
+        : isDeleting
+          ? 55
+          : 95;
 
-        setText(updatedText);
+    const timeout = setTimeout(() => {
+      if (isComplete && !isDeleting) {
+        setIsDeleting(true);
+        return;
+      }
 
-        if(isDeleting){
-            setDelta(prevDelta => prevDelta / 2);
-        }
+      if (isEmpty && isDeleting) {
+        setIsDeleting(false);
 
-        if(!isDeleting && updatedText === fullText){
-            setIsDeleting(true);
-            setDelta(period);
-        } else if (isDeleting && updatedText === '') {
-            setIsDeleting(false);
-            setLoopNum(loopNum + 1);
-            setDelta(500);
-        } else {
-            setIndex(prevIndex => prevIndex + 1);
-        }
+        setRoleIndex((currentIndex) => {
+          return (currentIndex + 1) % roles.length;
+        });
+
+        return;
+      }
+
+      setText((currentText) => {
+        return isDeleting
+          ? activeRole.substring(0, currentText.length - 1)
+          : activeRole.substring(0, currentText.length + 1);
+      });
+    }, delay);
+
+    return () => {
+      clearTimeout(timeout);
     };
+  }, [isDeleting, roleIndex, text]);
 
-    useEffect(() => {
-        let ticker = setInterval(() => {
-            tick();
-        }, delta);
+  return (
+    <section className="banner" id="home">
+      <Container>
+        <Row className="align-items-center">
+          <Col xs={12} md={7}>
+            <TrackVisibility>
+              {({ isVisible }) => (
+                <div
+                  className={
+                    isVisible
+                      ? "animate__animated animate__fadeIn"
+                      : ""
+                  }
+                >
+                  <span className="tagline">
+                    Computer Science Graduate
+                  </span>
 
-        return () => { clearInterval(ticker) };
-    }, [text])
+                  <h1>
+                    Hi, I&apos;m Woodna Adrien
+                    <span className="txt-rotate">
+                      <span className="wrap"> | {text}</span>
+                    </span>
+                  </h1>
 
-    return (
-        <section className="banner" id="home">
-            <Container>
-                <Row className="align-items-center">
-                    <Col xs={12} md={6} x1={7}>
-                        <TrackVisibility>
-                            {({ isVisible}) =>
-                            <div className={isVisible ? "animate_animated animate_fadeIn": ""}>
-                                <span className="tagline">Welcome to my Portfolio!</span>
-                                <h1>{`Hi, I'm Woodna Adrien `}<span className="txt-rotate" dataPeriod="1000"data-rotate='["Software Developer", "Android", "Cloud", "AI Tools", "CS Student (May 2026)"]'><span className="wrap">{text}</span></span></h1>
-                                <p>I'm a Software Engineer and Computer Science student at Wilmington University.
-                                    I specialized in mobile app development, React-based web interfaces, and full-stack experimentation.
-                                </p>
-                                <Router>
-                                    <HashLink to="#connect">
-                                        <button onClick={() => console.log('connect')}>
-                                            Let's Connect <ArrowRightCircle size={25} />
-                                        </button>
-                                    </HashLink>
-                                </Router>
-                            </div>}
-                        </TrackVisibility>
-                    </Col>
-                    <Col xs={12} md={6} xl={5}>
-                        <TrackVisibility>
-                            {({ isVisible }) =>
-                            <div className={isVisible ? "animate_animated animate_zoomIn" : ""}>
-                                <img src={headerImg} alt="Header Img" />
-                            </div>}
-                        </TrackVisibility>
-                    </Col>
-                </Row>
-            </Container>
-        </section>
-    )
-}
+                  <p>
+                    I build user-focused applications and enjoy solving
+                    technical problems through software development,
+                    application troubleshooting, and quality testing. My
+                    projects include Java and Spring Boot applications,
+                    React interfaces, and Android mobile apps.
+                  </p>
+
+                  <a href="#connect" className="banner-link">
+                    Let&apos;s Connect
+                    <ArrowRightCircle size={25} />
+                  </a>
+                </div>
+              )}
+            </TrackVisibility>
+          </Col>
+
+          <Col xs={12} md={5}>
+            <TrackVisibility>
+              {({ isVisible }) => (
+                <div
+                  className={
+                    isVisible
+                      ? "animate__animated animate__zoomIn"
+                      : ""
+                  }
+                >
+                  <img
+                    src={headerImg}
+                    alt="Illustration representing software development"
+                  />
+                </div>
+              )}
+            </TrackVisibility>
+          </Col>
+        </Row>
+      </Container>
+    </section>
+  );
+};

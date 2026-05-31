@@ -1,5 +1,3 @@
-// server.js - enable nodemailer backend
-
 import express from "express";
 import cors from "cors";
 import nodemailer from "nodemailer";
@@ -7,84 +5,228 @@ import dotenv from "dotenv";
 import { MongoClient } from "mongodb";
 
 dotenv.config();
+
 const app = express();
-const PORT = 5000;
 
+const PORT =
+  process.env.PORT || 5000;
 
-app.use(cors());
-app.use(express.json());
+const allowedOrigins = (
+  process.env.ALLOWED_ORIGINS ||
+  "http://localhost:5173"
+)
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
 
-// connect to db
-const client = new MongoClient(process.env.MONGO_URI);
+app.use(
+  cors({
+    origin(origin, callback) {
+      if (
+        !origin ||
+        allowedOrigins.includes(origin)
+      ) {
+        callback(null, true);
+        return;
+      }
+
+      callback(
+        new Error("Origin not allowed by CORS")
+      );
+    },
+  })
+);
+
+app.use(
+  express.json({
+    limit: "20kb",
+  })
+);
+
 let messagesCollection;
+let mongoClient;
 
-async function connectToDB() {
-    try {
-        await client.connect();
-        const db = client.db('portfolio');
-        messagesCollection = db.collection('messages');
-        console.log("Connected to MongoDB");
-    } catch (error) {
-        console.error("MongoDB connection failed:", error);
-    }
+async function connectToDatabase() {
+  if (!process.env.MONGO_URI) {
+    console.warn(
+      "MONGO_URI is not configured. Messages will not be stored until it is added."
+    );
+
+    return;
+  }
+
+  try {
+    mongoClient =
+      new MongoClient(process.env.MONGO_URI);
+
+    await mongoClient.connect();
+
+    const database = mongoClient.db(
+      process.env.MONGO_DB_NAME || "portfolio"
+    );
+
+    messagesCollection =
+      database.collection("messages");
+
+    console.log("Connected to MongoDB");
+  } catch (error) {
+    console.error(
+      "MongoDB connection failed:",
+      error.message
+    );
+  }
 }
 
-connectToDB();
-
-// email setup
-const contactEmail = nodemailer.createTransport({
+const transporter =
+  nodemailer.createTransport({
     service: "gmail",
+
     auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
     },
+  });
+
+const cleanText = (
+  value,
+  maxLength = 2000
+) => {
+  return String(value || "")
+    .trim()
+    .replace(/[<>]/g, "")
+    .slice(0, maxLength);
+};
+
+const isValidEmail = (email) => {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
+    email
+  );
+};
+
+app.get("/health", (_req, res) => {
+  res.status(200).json({
+    status: "ok",
+  });
 });
 
-contactEmail.verify((error) => {
-    if(error) console.log("Email config error: ", error);
-    else console.log("Ready to send emails.");
-});
-
-// contact form POST route
 app.post("/contact", async (req, res) => {
-    const { firstName, lastName, email, phone, message } = req.body;
-    const name = `${firstName} ${lastName}`;
+  const firstName = cleanText(
+    req.body.firstName,
+    80
+  );
 
-    // compose email to you
-    const mail = {
-        from: name,
-        to: process.env.EMAIL_USER, // personal email (hidden form users)
-        subject: "Contact Form Submission",
-        html: `
-                <h3>You received a new message via your portfolio:</h3>
-                <p><strong>Name:</strong> ${name}</p>
-                <p>Email: ${email}</p>
-                <p>Phone: ${phone}</p>
-                <p>Message: ${message}</p>
-                
-        `,
-    };
+  const lastName = cleanText(
+    req.body.lastName,
+    80
+  );
 
-    try{
-        
-        // save message to database
-        await messagesCollection.insertOne({
-            name,
-            email,
-            phone,
-            message,
-            timestamp: new Date(),
-        });
+  const email = cleanText(
+    req.body.email,
+    160
+  ).toLowerCase();
 
-        // send email
-        await contactEmail.sendMail(mail);
+  const phone = cleanText(
+    req.body.phone,
+    40
+  );
 
-        res.status(200).json({status: "Message Sent" });
-    } catch (error) {
-        res.status(500).json(error);
+  const message = cleanText(
+    req.body.message,
+    3000
+  );
+
+  const name =
+    `${firstName} ${lastName}`.trim();
+
+  if (
+    !firstName ||
+    !lastName ||
+    !email ||
+    !message
+  ) {
+    return res.status(400).json({
+      error:
+        "Please complete all required fields.",
+    });
+  }
+
+  if (!isValidEmail(email)) {
+    return res.status(400).json({
+      error:
+        "Please enter a valid email address.",
+    });
+  }
+
+  if (
+    !process.env.EMAIL_USER ||
+    !process.env.EMAIL_PASS
+  ) {
+    return res.status(503).json({
+      error:
+        "The contact service is not configured yet.",
+    });
+  }
+
+  const submission = {
+    name,
+    email,
+    phone,
+    message,
+    timestamp: new Date(),
+  };
+
+  try {
+    if (messagesCollection) {
+      await messagesCollection.insertOne(
+        submission
+      );
     }
 
+    await transporter.sendMail({
+      from:
+        `Portfolio Contact Form <${process.env.EMAIL_USER}>`,
+
+      replyTo:
+        `${name} <${email}>`,
+
+      to:
+        process.env.EMAIL_USER,
+
+      subject:
+        `Portfolio Contact Form Submission from ${name}`,
+
+      text: [
+        "You received a new portfolio contact-form submission.",
+        "",
+        `Name: ${name}`,
+        `Email: ${email}`,
+        `Phone: ${phone || "Not provided"}`,
+        "",
+        "Message:",
+        message,
+      ].join("\n"),
+    });
+
+    return res.status(200).json({
+      status: "Message sent",
+    });
+  } catch (error) {
+    console.error(
+      "Contact submission failed:",
+      error.message
+    );
+
+    return res.status(500).json({
+      error:
+        "Your message could not be sent. Please try again later.",
+    });
+  }
 });
 
-// start server
-app.listen(PORT, () => console.log("Server Running"));
+connectToDatabase().finally(() => {
+  app.listen(PORT, () => {
+    console.log(
+      `Server running on port ${PORT}`
+    );
+  });
+});
