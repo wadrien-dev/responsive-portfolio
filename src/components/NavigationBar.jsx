@@ -84,7 +84,7 @@ export const NavigationBar = () => {
           <span className="navbar-text">
             <span className="social-icon">
               <a
-                href="https://www.linkedin.com/in/woodna-adrien-9b0007230/"
+                href="https://www.linkedin.com/in/woodna-adrien"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="LinkedIn profile"
