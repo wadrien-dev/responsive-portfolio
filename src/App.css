@@ -318,8 +318,47 @@ nav.navbar .navbar-toggler-icon::after {
 /* Skills */
 
 .skills {
+  background:
+    radial-gradient(
+      circle at 18% 72%,
+      rgba(39, 193, 132, 0.14),
+      transparent 32%
+    ),
+    linear-gradient(
+      180deg,
+      #101712 0%,
+      #0d130f 100%
+    );
+  overflow: hidden;
   padding: 0 0 72px;
   position: relative;
+}
+
+/* Decorative glow behind skills */
+
+.background-image-left {
+  bottom: -80px;
+  left: -30px;
+  opacity: 0.42;
+  position: absolute;
+  width: 42%;
+  z-index: 0;
+
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 18%,
+    black 68%,
+    transparent 100%
+  );
+
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 18%,
+    black 68%,
+    transparent 100%
+  );
 }
 
 .skill-bx {
@@ -333,64 +372,6 @@ nav.navbar .navbar-toggler-icon::after {
   z-index: 2;
 }
 
-.skill-bx h2,
-.project h2,
-.contact h2 {
-  font-size: clamp(38px, 5vw, 48px);
-  font-weight: 700;
-}
-
-.skill-bx > p,
-.project > .container p {
-  color: var(--muted);
-  font-size: 18px;
-  line-height: 1.6;
-  margin: 12px 0 28px;
-}
-
-.skills-grid {
-  display: grid;
-  gap: 16px;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-.skill-card {
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 22px;
-}
-
-.skill-card h3 {
-  font-size: 19px;
-  font-weight: 700;
-  margin-bottom: 14px;
-}
-
-.skill-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.skill-tags span {
-  background: var(--green-soft);
-  border: 1px solid rgba(120, 217, 154, 0.3);
-  border-radius: 999px;
-  color: #d8ffe4;
-  font-size: 14px;
-  padding: 6px 10px;
-}
-
-.background-image-left {
-  bottom: 0;
-  left: 0;
-  opacity: 0.55;
-  position: absolute;
-  width: 38%;
-  z-index: -1;
-}
-
 /* Project CSS */
 
 .project {
@@ -401,6 +382,7 @@ nav.navbar .navbar-toggler-icon::after {
       transparent 32%
     ),
     #0d130f;
+  margin-top: -1px;
   padding: 92px 0 110px;
   position: relative;
 }
