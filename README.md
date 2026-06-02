@@ -161,6 +161,6 @@ This project strengthened my ability to:
 **Woodna Adrien**  
 Computer Science Graduate | Junior Software Developer | Application Support | QA Testing  
 
-- [LinkedIn](https://www.linkedin.com/in/woodna-adrien-9b0007230)
+- [LinkedIn](https://www.linkedin.com/in/woodna-adrien)
 - [GitHub](https://github.com/wadrien-dev)
 - Email: `wadrien.dev@gmail.com`
